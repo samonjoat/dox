@@ -1,7 +1,9 @@
+<!-- DOX-CORE-START: do not edit or remove this protected framework block -->
 # DOX framework
 
-- DOX is highly performant AGENTS.md hierarchy installed here
-- Agent must follow DOX instructions across any edits
+- DOX is a highly portable AGENTS.md hierarchy installed here
+- Agents must follow DOX instructions across any edits
+- The protected framework block between `DOX-CORE-START` and `DOX-CORE-END` is the root contract and must not be weakened, removed, or rewritten by agents
 
 ## Core Contract
 
@@ -76,8 +78,25 @@ Default section order:
 
 ## User Preferences
 
-When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
+When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md.
+<!-- DOX-CORE-END: protected framework block ends here -->
+
+## Project Guidance
+
+- This repository distributes DOX as Markdown-first guidance plus optional helper conventions.
+- Keep the core install path copy-pasteable: users can still copy `AGENTS.md` without installing anything.
+- Optional tooling must remain additive. Scripts and specs may validate DOX trees, but they must not make the Markdown framework dependent on a package or service.
+- Distinguish reported evidence from verified guarantees. Do not present third-party metrics as proof unless the methodology is independently audited.
+
+## Verification
+
+- Run `python3 scripts/dox_lint.py .` after changing AGENTS.md structure, docs conventions, or child indexes.
+- For docs-only prose changes that do not affect the DOX tree, review the rendered Markdown or changed diff.
 
 ## Child DOX Index
 
-This project is not yet indexed. Before continuing you must scan the project, build the DOX tree and replace this message with the actual index. Go deep and scan files recursively to properly evaluate complexity and create nested DOX files where needed.
+- `.github/AGENTS.md` — GitHub Actions automation for DOX validation.
+- `agents/AGENTS.md` — templates for orchestrator/documenter agent workflows that maintain DOX trees.
+- `docs/AGENTS.md` — DOX specification, validation convention, and evidence/caveat documentation.
+- `scripts/AGENTS.md` — optional local tooling for validating DOX structure.
+- `tests/AGENTS.md` — regression tests for optional DOX tooling.
