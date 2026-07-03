@@ -13,11 +13,10 @@ from __future__ import annotations
 
 import argparse
 import re
-import sys
 from pathlib import Path
 
-CORE_START = "DOX-CORE-START"
-CORE_END = "DOX-CORE-END"
+CORE_START_RE = re.compile(r"<!--\s*DOX-CORE-START\b[^>]*-->")
+CORE_END_RE = re.compile(r"<!--\s*DOX-CORE-END\b[^>]*-->")
 REQUIRED_CHILD_SECTIONS = [
     "Purpose",
     "Ownership",
@@ -38,6 +37,7 @@ SKIP_DIRS = {
     "coverage",
     "__pycache__",
 }
+CHILD_PATH_RE = re.compile(r"^\s*-\s+`([^`]*AGENTS\.md)`")
 CHILD_ENTRY_RE = re.compile(r"^\s*-\s+`([^`]*AGENTS\.md)`\s+[—-]\s+\S")
 
 
@@ -83,14 +83,14 @@ def validate(root: Path) -> list[str]:
     agents_set = {p.resolve() for p in agents_files}
     root_text = read_text(root_agents)
 
-    start = root_text.find(CORE_START)
-    end = root_text.find(CORE_END)
-    if start == -1:
-        errors.append("root AGENTS.md missing DOX-CORE-START marker")
-    if end == -1:
-        errors.append("root AGENTS.md missing DOX-CORE-END marker")
-    if start != -1 and end != -1 and start > end:
-        errors.append("root AGENTS.md DOX core markers are out of order")
+    start_match = CORE_START_RE.search(root_text)
+    end_match = CORE_END_RE.search(root_text)
+    if start_match is None:
+        errors.append("root AGENTS.md missing DOX-CORE-START HTML comment marker")
+    if end_match is None:
+        errors.append("root AGENTS.md missing DOX-CORE-END HTML comment marker")
+    if start_match is not None and end_match is not None and start_match.start() > end_match.start():
+        errors.append("root AGENTS.md DOX core HTML comment markers are out of order")
 
     for agents_path in agents_files:
         rel = agents_path.relative_to(root)
@@ -106,10 +106,14 @@ def validate(root: Path) -> list[str]:
                     errors.append(f"{rel}: missing ## {section}")
 
         for line in child_index_body(text):
-            match = CHILD_ENTRY_RE.match(line)
-            if not match:
+            path_match = CHILD_PATH_RE.match(line)
+            if not path_match:
                 continue
-            child_rel = match.group(1)
+
+            child_rel = path_match.group(1)
+            if not CHILD_ENTRY_RE.match(line):
+                errors.append(f"{rel}: child index entry for {child_rel} missing description")
+
             child_path = (agents_path.parent / child_rel).resolve()
             if child_path not in agents_set:
                 errors.append(f"{rel}: child index points to missing {child_rel}")

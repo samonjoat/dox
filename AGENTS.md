@@ -99,3 +99,4 @@ When the user requests a durable behavior change, record it here or in the relev
 - `agents/AGENTS.md` — templates for orchestrator/documenter agent workflows that maintain DOX trees.
 - `docs/AGENTS.md` — DOX specification, validation convention, and evidence/caveat documentation.
 - `scripts/AGENTS.md` — optional local tooling for validating DOX structure.
+- `tests/AGENTS.md` — regression tests for optional DOX tooling.

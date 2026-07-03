@@ -19,9 +19,9 @@ DOX remains a Markdown-first `AGENTS.md` framework. This convention is optional:
 
 ## Required shape
 
-A DOX repository has a root `AGENTS.md`.
+A repository that opts into this machine-checkable convention must have a root `AGENTS.md`.
 
-The root `AGENTS.md` should contain:
+The root `AGENTS.md` must contain:
 
 1. A protected framework block, delimited by:
    - `<!-- DOX-CORE-START: ... -->`
@@ -33,7 +33,7 @@ The root `AGENTS.md` should contain:
 - `path/to/AGENTS.md` — short description of the child scope.
 ```
 
-Child `AGENTS.md` files should use this section order:
+Child `AGENTS.md` files must use this section order:
 
 1. `# <scope name>`
 2. `## Purpose`
@@ -78,7 +78,7 @@ The validator checks:
 - protected root DOX markers exist and are ordered correctly
 - every `AGENTS.md` has a `## Child DOX Index`
 - every child-index bullet pointing to an `AGENTS.md` resolves to a real file
-- every non-root `AGENTS.md` includes the recommended child section set
+- every non-root `AGENTS.md` includes the required child section set
 
 Validation is intentionally structural. It cannot prove the prose is correct.
 
