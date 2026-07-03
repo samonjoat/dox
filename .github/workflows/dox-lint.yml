@@ -1,0 +1,20 @@
+name: DOX lint
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  dox-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Run DOX structural validator
+        run: python3 scripts/dox_lint.py .
